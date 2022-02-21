@@ -5,36 +5,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-int number, imput = 0;
-char character[1000];
+int imput;
+struct fileWrite {
+  char copyFile[1000];
+  char fileName[1000];
+} fp;
+
+struct listFile {
+  int number;
+  char character[1000];
+} list;
+
 FILE *file;
-FILE *file2;
+FILE *copiedFile;
+
+void flush_in() {  // clean the buffer
+  int ch;
+  while ((ch = fgetc(stdin)) != EOF && ch != '\n') {
+  }
+};
 
 void write() {
-  file = fopen("shoppingList.txt", "w");  // if not exist, will create
-  if (file != NULL)                       // if anything is wrong, will alarm
-    printf("\nshoppingList.txt file was opened successfully\n");
+  printf("File to be created\n");
+  scanf("%s", fp.fileName);
+  file = fopen(fp.fileName, "w");  // if not exist, will create
+
+  if (file != NULL)  // if anything is wrong, will alarm
+    printf("\n%s file was opened successfully\n", fp.fileName);
   else {
-    printf("\n\nError: The shoppingList.txt file was not opened\n");
+    printf("\n\nError: The %s file was not opened\n", fp.fileName);
     system("pause");
     exit(0);
   }
   printf("How many items do you want to add?\n");
-  scanf("%d", &number);
-  for (int i = 1; i < number + 1; i++) {
+  scanf("%d", &list.number);
+
+  for (int i = 1; i < list.number + 1; i++) {
     printf("Item - %d\n", i);
-    scanf("%s", &character);  // scan the item for add in the file
-    fprintf(file, "%d - %s\n", i, character);  // print into the file
+    scanf("%s", list.character);  // scan the item for add in the file
+    fprintf(file, "%d - %s\n", i, list.character);  // print into the file
   }
   fclose(file);  // close the file
 };
 
 void read() {
-  file = fopen("shoppingList.txt", "r");  // will open the file *.txt
-  if (file != NULL)                       // if anything is wrong, will alarm
-    printf("\nshoppingList.txt file was opened successfully\n");
+  printf("File to be read\n");
+  scanf("%s", fp.fileName);
+  file = fopen(fp.fileName, "r");  // will open the file *.txt
+
+  if (file != NULL)  // if anything is wrong, will alarm
+    printf("\n%s file was opened successfully\n", fp.fileName);
   else {
-    printf("\n\nError: The shoppingList.txt file was not opened\n");
+    printf("\n\nError: The %s file was not opened\n", fp.fileName);
     system("pause");
     exit(0);
   }
@@ -48,39 +70,48 @@ void read() {
 };
 
 void alter() {
-  file = fopen("shoppingList.txt", "a");  // will open the file *.txt
-  if (file != NULL)                       // if anything is wrong, will alarm
-    printf("\nshoppingList.txt file was opened successfully\n");
+  printf("File to be alter\n");
+  scanf("%s", fp.fileName);
+  file = fopen(fp.fileName, "a");  // will open the file *.txt
+
+  if (file != NULL)  // if anything is wrong, will alarm
+    printf("\n%s file was opened successfully\n", fp.fileName);
   else {
-    printf("\n\nError: The shoppingList.txt file was not opened\n");
+    printf("\n\nError: The %s file was not opened\n", fp.fileName);
     system("pause");
     exit(0);
   }
   printf("How many items do you want to add?\n");
-  scanf("%d", &number);
-  for (int i = 1; i < number + 1; i++) {
+  scanf("%d", &list.number);
+  for (int i = 1; i < list.number + 1; i++) {
     printf("Item - %d\n", i);
-    scanf("%s", &character);  // scan the item for add in the file
-    fprintf(file, "%d - %s\n", i, character);  // print into the file
+    scanf("%s", list.character);  // scan the item for add in the file
+    fprintf(file, "%d - %s\n", i, list.character);  // print into the file
   }
   fclose(file);  // close the file
 };
 
 void copy() {
-  file = fopen("shoppingList.txt", "r");
-  if (file != NULL) {  // if anything is wrong, will alarm
-    printf("\nshoppingList.txt file was opened successfully\n");
-  } else {
-    printf("\n\nError: The shoppingList.txt file was not opened\n");
+  printf("File to be copy\n");
+  scanf("%s", fp.fileName);
+  file = fopen(fp.fileName, "r");
+
+  if (file != NULL)  // if anything is wrong, will alarm
+    printf("\n%s file was opened successfully\n", fp.fileName);
+  else {
+    printf("\n\nError: The %s file was not opened\n", fp.fileName);
     system("pause");
     exit(0);
   }
-  file2 = fopen("copyListr.txt", "w");
-  while (fgets(character, 1000, file) != NULL) {
-    fputs(character, file2);
+
+  printf("File name to be copied\n");
+  scanf("%s", fp.copyFile);
+  copiedFile = fopen(fp.copyFile, "w");
+  while (fgets(list.character, 1000, file) != NULL) {
+    fputs(list.character, copiedFile);
   }
   fclose(file);
-  fclose(file2);
+  fclose(copiedFile);
 };
 
 int main(void) {
