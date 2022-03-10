@@ -3,7 +3,6 @@
 
   &#xa0;
 
-  <!-- <a href="https://aulasprog.netlify.app">Demo</a> -->
 </div>
 
 <h1 align="center">Shopping-List</h1>
