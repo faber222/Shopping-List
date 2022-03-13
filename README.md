@@ -26,7 +26,7 @@
 <!-- Status -->
 
 <h4 align="center"> 
-	🚧  Shopping-List 🚀 Under construction...  🚧
+	🚧  Shopping-List 🚀 Finished 🚧
 </h4> 
 
 <hr> 
@@ -44,6 +44,11 @@
 <br>
 
 ## :dart: About ##
+
+This is a college final project, done in order to create a shopping list using the C language.
+With the help of the command terminal, we can create a list, read, edit and copy an existing one, all of course being a text file.
+
+We can add item by item, and the amount of items we want.
 
 For running and debug using the Windows OS, you need to install MinGW Installation Manager.
 Install the entire instance of GCC.
@@ -88,8 +93,12 @@ $ code .
 
 # For compiler, press F6, this will create a executable code 
 # Or use this command
-$ gcc -g {fileNameDir} -c
-$ a.out
+$ gcc -g {fileNameDir} -o {nameTheCode}
+$ ./{nameTheCode}.out
+
+# On windows is the same
+$ gcc -g {fileNameDir} -o {nameTheCode}
+$ {nameTheCode}.exe
 ```
 
 ## :memo: License ##
