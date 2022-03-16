@@ -3,32 +3,33 @@ AUThOR: Faber Bernardo júnior & Igor Silva Vieira
 DATA: 13/03/2022
 PROGRAM SYNOPSIS: make a shopping list, just using the terminal
 INPUT DATA: the struct listFile
-OUTPUT DATA: the struct fileWrite
+OUTPUT DATA: the struct fileCreate
 */
 
-#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
-  char copyFile[100];
-  char fileName[100];
-} fileWrite;
+#define CHAR_MAX 100
 
 typedef struct {
-  int number;
-  char character[100];
+  char fileCopy[CHAR_MAX];
+  char fileName[CHAR_MAX];
+} fileCreate;
+
+typedef struct {
+  int index;
+  char character[CHAR_MAX];
   int amount;
 } listFile;
 
-fileWrite filePrint;
+fileCreate file;
 listFile list;
 FILE* mainFile;
 
 FILE* fileOpen(char* name, char* mode) {  // function for open the mainFile
   FILE* test = fopen(name, mode);         // fopen manipulate the FILE pointer
   if (test == NULL) {                     // test if it doesn't open, will alarm
-    printf("\n\nError: The %s mainFile was not opened\n", filePrint.fileName);
+    printf("\n\nError: The %s mainFile was not opened\n", file.fileName);
     system("pause");  // it only works on windows
     exit(0);
   }
@@ -36,24 +37,23 @@ FILE* fileOpen(char* name, char* mode) {  // function for open the mainFile
 };
 
 void create() {
-  char numberList[100];
-  char compare[100];
-  list.number = 0;
+  char compare[CHAR_MAX];
+  list.index = 0;
 
-  while (list.number == 0) {
+  while (list.index == 0) {
     printf("How many items do you want to add?\n");
-    scanf("%s", numberList);
+    scanf("%s", compare);
 
-    list.number =
-        atoi(numberList);  // This function returns the converted integral
-                           // number as an int value. If no valid conversion
-                           // could be performed, it returns zero.
-    if (list.amount == 0) {
+    list.index =
+        atoi(compare);  // This function returns the converted integral
+                        // number as an int value. If no valid conversion
+                        // could be performed, it returns zero.
+    if (list.index == 0) {
       printf("Please enter a number!\n");
     }
   }
 
-  for (int i = 1; i < list.number + 1; i++) {
+  for (int i = 1; i < list.index + 1; i++) {
     list.amount = 0;
 
     printf("\nItem - %d - ", i);
@@ -78,25 +78,25 @@ void create() {
 
 void write() {
   printf("File to be created\n");
-  scanf("%s", filePrint.fileName);
+  scanf("%s", file.fileName);
 
   mainFile =
-      fileOpen(filePrint.fileName, "w");  // if not exist, will create for write
+      fileOpen(file.fileName, "w");  // if not exist, will create for write
 
   create();
   fclose(mainFile);  // close the mainFile
 };
 
 void read() {
-  char word[100];  // char to storage the word
+  char word[CHAR_MAX];  // char to storage the word
 
   printf("File to be read\n");
-  scanf("%s", filePrint.fileName);
+  scanf("%s", file.fileName);
 
-  mainFile = fileOpen(filePrint.fileName,
+  mainFile = fileOpen(file.fileName,
                       "r");  // will open the mainFile *.txt for read
 
-  while (fgets(word, 100, mainFile) !=
+  while (fgets(word, CHAR_MAX, mainFile) !=
          NULL)  // fgets will get the entire string of file while != NULL
   {
     printf("%s", word);  // print the read word while looping
@@ -107,9 +107,9 @@ void read() {
 
 void alter() {
   printf("File to be alter\n");
-  scanf("%s", filePrint.fileName);
+  scanf("%s", file.fileName);
 
-  mainFile = fileOpen(filePrint.fileName,
+  mainFile = fileOpen(file.fileName,
                       "a");  // will open the mainFile *.txt for alter
 
   create();
@@ -120,18 +120,18 @@ void copy() {
   FILE* copiedFile;
 
   printf("File to be copy\n");
-  scanf("%s", filePrint.fileName);
+  scanf("%s", file.fileName);
 
-  mainFile = fileOpen(filePrint.fileName,
+  mainFile = fileOpen(file.fileName,
                       "r");  // will open the mainFile *.txt for read
 
   printf("File name to be copied\n");
-  scanf("%s", filePrint.copyFile);
+  scanf("%s", file.fileCopy);
 
-  copiedFile = fopen(filePrint.copyFile,
+  copiedFile = fopen(file.fileCopy,
                      "w");  // will open the copiedFile *.txt for  write
 
-  while (fgets(list.character, 100, mainFile) !=
+  while (fgets(list.character, CHAR_MAX, mainFile) !=
          NULL) {  // fgets will get the entire string of file while != NULL
     fputs(list.character, copiedFile);  // fputs will put the string of
                                         // list.character in the copiedFile
@@ -142,7 +142,7 @@ void copy() {
 };
 
 int main(void) {
-  int imput;
+  int input;
 
   do {
     printf("\nSelect one of the options below");
@@ -151,9 +151,9 @@ int main(void) {
     printf("\n(3) to edit an existing list");
     printf("\n(4) to copy an existing list");
     printf("\n(5) to exit the program\n");
-    scanf("%d", &imput);  // scan the type value
+    scanf("%d", &input);  // scan the type value
 
-    switch (imput) {
+    switch (input) {
       case 1:
         write();  // The function write, create the shopping list file
         break;
@@ -163,7 +163,7 @@ int main(void) {
         break;
 
       case 3:
-        alter();  // The function alter, just imput more datas into the file
+        alter();  // The function alter, just input more datas into the file
         break;
 
       case 4:
@@ -183,9 +183,8 @@ int main(void) {
         break;
     }
 
-  } while (imput <= 4);
+  } while (input <= 4);
 
   printf("\n");
   system("pause");  // it only works on windows
-  return 0;
 }
